@@ -50,3 +50,31 @@ function showQuestion() {
     document.getElementById("choice" + (i + 1)).textContent = choices[i];
   }
 }
+
+function checkAnswer(event) {
+  const selectedAnswer = event.target.textContent;
+  const currentQuestion = questions[currentQuestionIndex];
+
+  if (selectedAnswer === currentQuestion.correctAnswer) {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      showQuestion();
+    } else {
+      endQuiz();
+    }
+  } else {
+    timeRemaining -= 10;
+    if (timeRemaining <= 0) {
+      timeRemaining = 0;
+      endQuiz();
+    }
+    timerElement.textContent = timeRemaining;
+  }
+}
+
+function endQuiz() {
+  clearInterval(timer);
+  quizContainer.style.display = "none";
+  resultsContainer.style.display = "block";
+  displayHighScores();
+}
