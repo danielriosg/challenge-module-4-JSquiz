@@ -31,3 +31,22 @@ const highScoresList = document.getElementById("high-scores");
 let currentQuestionIndex = 0;
 let timeRemaining = 60;
 let timer;
+
+function startQuiz() {
+  startButton.style.display = "none";
+  quizContainer.style.display = "block";
+  timerElement.textContent = timeRemaining;
+
+  timer = setInterval(updateTimer, 1000);
+
+  showQuestion();
+}
+
+function showQuestion() {
+  const currentQuestion = questions[currentQuestionIndex];
+  document.getElementById("question").textContent = currentQuestion.question;
+  const choices = currentQuestion.choices;
+  for (let i = 0; i < choices.length; i++) {
+    document.getElementById("choice" + (i + 1)).textContent = choices[i];
+  }
+}
