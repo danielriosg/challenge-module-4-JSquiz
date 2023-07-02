@@ -78,3 +78,40 @@ function endQuiz() {
   resultsContainer.style.display = "block";
   displayHighScores();
 }
+
+function displayHighScores() {
+  const initialsInput = document.getElementById("initials");
+  const initials = initialsInput.ariaValueMax.toUpperCase();
+  const score = timeRemaining;
+
+  if (initials && score > 0) {
+    const scoreData = {
+      initials: initials,
+      score: score,
+    };
+    let highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
+
+    highScores.push(scoreData);
+
+    highScores.sort((a, b) => b.score - a.score);
+
+    highScores = highScores.slice(0.5);
+
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+
+    showHighScores(highScores);
+
+    initialsInput.value = "";
+  }
+}
+
+function showHighScores(highScores) {
+  const highScoresList = document.getElementById("high-scores");
+  highScoresList.innerHTML = "";
+
+  for (const scoreData of highScores) {
+    const li = document.createElement("li");
+    li.textContent = scoreData.initials + ": " + scoreData.score;
+    highScoresList.appendChild(li);
+  }
+}
