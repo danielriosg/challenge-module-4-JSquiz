@@ -81,9 +81,9 @@ function endQuiz() {
 
 function displayHighScores() {
   const initialsInput = document.getElementById("initials");
-  const initials = initialsInput.ariaValueMax.toUpperCase();
+  const initials = initialsInput.value.toUpperCase();
   const score = timeRemaining;
-
+  // corrected const initials
   if (initials && score > 0) {
     const scoreData = {
       initials: initials,
@@ -95,8 +95,8 @@ function displayHighScores() {
 
     highScores.sort((a, b) => b.score - a.score);
 
-    highScores = highScores.slice(0.5);
-
+    highScores = highScores.slice(0, 5);
+    // corrected .slice
     localStorage.setItem("highScores", JSON.stringify(highScores));
 
     showHighScores(highScores);
@@ -115,3 +115,25 @@ function showHighScores(highScores) {
     highScoresList.appendChild(li);
   }
 }
+document
+  .getElementById("quiz-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    displayHighScores();
+    resultsContainer.style.display = "none";
+    startButton.style.display = "block";
+    currentQuestionIndex = 0;
+    timeRemaining = 60;
+  });
+
+function updateTimer() {
+  timeRemaining--;
+  timerElement.textContent = timeRemaining;
+  if (timeRemaining <= 0) {
+    timeRemaining = 0;
+    endQuiz();
+  }
+}
+
+startButton.addEventListener("click", startQuiz);
+document.getElementById("quiz").addEventListener("click", checkAnswer);
